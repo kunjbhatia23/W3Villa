@@ -7,7 +7,7 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-// @desc    Register a new user
+//Register a new user
 exports.registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -28,7 +28,7 @@ exports.registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role, // Can be 'Admin' or 'User'
+      role, // Can be 'Admin' or 'Student'
     });
 
     if (user) {
@@ -47,7 +47,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate user & get token
+// Authenticate user & get token
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
