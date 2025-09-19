@@ -73,5 +73,5 @@ The application will be running at http://localhost:5173.
 
 ## Deployed Application & Demo
 
-- Live Application URL: [Link to your deployed application]  
-- Demo Video: [Link to your 3-5 minute demo video]
+- Live Application URL: xyz  
+- Demo Video: xyz
