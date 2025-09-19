@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://w3villa-k1t5.onrender.com/api/:path*"
+    }
+  ]
+}
