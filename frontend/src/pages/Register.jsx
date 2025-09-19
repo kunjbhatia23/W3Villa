@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import './Form.css';
 
 const Register = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'User' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -37,6 +37,10 @@ const Register = () => {
         <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
         <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
         <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+        <select name="role" value={formData.role} onChange={handleChange}>
+            <option value="User">Student</option>
+            <option value="Admin">Admin</option>
+        </select>
         <button type="submit">Register</button>
       </form>
     </div>

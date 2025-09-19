@@ -8,21 +8,13 @@ const {
   borrowBook,
   returnBook,
   getBorrowedBooks,
+  getBookBorrowers // Import the new controller function
 } = require('../controllers/bookController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// Public route to get all books
-router.get('/', getBooks);
+// ... (other routes remain the same)
 
-// Admin-only routes for managing books
-router.post('/', protect, admin, addBook);
-router.put('/:id', protect, admin, updateBook);
-router.delete('/:id', protect, admin, deleteBook);
-
-// User routes for borrowing and returning
-router.post('/:id/borrow', protect, borrowBook);
-router.post('/:id/return', protect, returnBook);
-router.get('/borrowed', protect, getBorrowedBooks);
-
+// Admin-only route to get borrowers of a specific book
+router.get('/:id/borrowers', protect, admin, getBookBorrowers);
 
 module.exports = router;

@@ -40,11 +40,13 @@ const Navbar = () => {
                   </NavLink>
                 </li>
               )}
-              <li className="nav-item">
-                <NavLink to="/my-books" className="nav-links" onClick={closeMenu}>
-                  My Books
-                </NavLink>
-              </li>
+              {user.role === 'User' && (
+                <li className="nav-item">
+                  <NavLink to="/my-books" className="nav-links" onClick={closeMenu}>
+                    My Books
+                  </NavLink>
+                </li>
+              )}
               <li className="nav-item">
                 <button onClick={handleLogout} className="nav-links-button">
                   Logout

@@ -1,7 +1,10 @@
 const Book = require('../models/Book');
 const Borrow = require('../models/Borrow');
+const User = require('../models/User'); // Ensure User model is imported
 
 // @desc    Get all books
+// @route   GET /api/books
+// @access  Public
 exports.getBooks = async (req, res) => {
   try {
     const books = await Book.find({});
@@ -12,6 +15,8 @@ exports.getBooks = async (req, res) => {
 };
 
 // @desc    Add a new book (Admin only)
+// @route   POST /api/books
+// @access  Private/Admin
 exports.addBook = async (req, res) => {
   const { title, author, genre, totalCopies } = req.body;
   
@@ -35,21 +40,21 @@ exports.addBook = async (req, res) => {
 };
 
 // @desc    Update a book (Admin only)
+// @route   PUT /api/books/:id
+// @access  Private/Admin
 exports.updateBook = async (req, res) => {
     try {
         const book = await Book.findById(req.params.id);
 
         if (book) {
-            const oldTotal = book.totalCopies;
-            const borrowedCount = oldTotal - book.availableCopies;
+            const borrowedCount = book.totalCopies - book.availableCopies;
 
             book.title = req.body.title || book.title;
             book.author = req.body.author || book.author;
             book.genre = req.body.genre || book.genre;
-            book.totalCopies = req.body.totalCopies || book.totalCopies;
             
-            // Recalculate available copies if total copies changed
             if (req.body.totalCopies !== undefined) {
+                book.totalCopies = req.body.totalCopies;
                 book.availableCopies = req.body.totalCopies - borrowedCount;
             }
 
@@ -68,13 +73,15 @@ exports.updateBook = async (req, res) => {
 };
 
 // @desc    Delete a book (Admin only)
+// @route   DELETE /api/books/:id
+// @access  Private/Admin
 exports.deleteBook = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
     if (book) {
       await book.deleteOne();
       // Also remove any active borrow records for this book
-      await Borrow.deleteMany({ book: req.params.id, returnDate: null });
+      await Borrow.deleteMany({ book: req.params.id });
       res.json({ message: 'Book removed' });
     } else {
       res.status(404).json({ message: 'Book not found' });
@@ -86,6 +93,8 @@ exports.deleteBook = async (req, res) => {
 
 
 // @desc    Borrow a book
+// @route   POST /api/books/:id/borrow
+// @access  Private
 exports.borrowBook = async (req, res) => {
     const bookId = req.params.id;
     const userId = req.user.id;
@@ -122,6 +131,8 @@ exports.borrowBook = async (req, res) => {
 };
 
 // @desc    Return a book
+// @route   POST /api/books/:id/return
+// @access  Private
 exports.returnBook = async (req, res) => {
     const bookId = req.params.id;
     const userId = req.user.id;
@@ -150,6 +161,8 @@ exports.returnBook = async (req, res) => {
 
 
 // @desc    Get user's borrowed books
+// @route   GET /api/books/borrowed
+// @access  Private
 exports.getBorrowedBooks = async (req, res) => {
     try {
         const borrowed = await Borrow.find({ user: req.user.id, returnDate: null }).populate('book');
@@ -157,4 +170,17 @@ exports.getBorrowedBooks = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
     }
+};
+
+// @desc    Get all users who have a specific book borrowed
+// @route   GET /api/books/:id/borrowers
+// @access  Private/Admin
+exports.getBookBorrowers = async (req, res) => {
+  try {
+    const borrows = await Borrow.find({ book: req.params.id, returnDate: null }).populate('user', 'name email');
+    res.json(borrows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
