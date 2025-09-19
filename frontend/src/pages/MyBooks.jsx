@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { useNotification } from '../context/NotificationContext'; // 1. Import hook
+import { useNotification } from '../context/NotificationContext'; 
 
 const MyBooks = () => {
     const [borrowedBooks, setBorrowedBooks] = useState([]);
-    const { showNotification } = useNotification(); // 2. Use hook
+    const { showNotification } = useNotification();
 
     const fetchMyBooks = async () => {
         try {

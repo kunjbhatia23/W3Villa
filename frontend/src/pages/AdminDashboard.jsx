@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { useNotification } from '../context/NotificationContext'; // 1. Import hook
+import { useNotification } from '../context/NotificationContext'; 
 import './Admin.css';
 
 const AdminDashboard = () => {
@@ -9,7 +9,7 @@ const AdminDashboard = () => {
     const [isEditing, setIsEditing] = useState(null);
     const [selectedBook, setSelectedBook] = useState(null);
     const [borrowers, setBorrowers] = useState([]);
-    const { showNotification } = useNotification(); // 2. Use hook
+    const { showNotification } = useNotification(); 
 
     const fetchBooks = async () => {
         const res = await api.get('/books');
@@ -29,16 +29,16 @@ const AdminDashboard = () => {
         try {
             if (isEditing) {
                 await api.put(`/books/${isEditing}`, form);
-                showNotification('Book updated successfully!'); // 3. Replace alert
+                showNotification('Book updated successfully!'); 
             } else {
                 await api.post('/books', form);
-                showNotification('Book added successfully!'); // 3. Replace alert
+                showNotification('Book added successfully!'); 
             }
             setForm({ title: '', author: '', genre: '', totalCopies: '' });
             setIsEditing(null);
             fetchBooks();
         } catch (error) {
-            showNotification(error.response?.data?.message || 'Operation failed.', 'error'); // 3. Replace alert
+            showNotification(error.response?.data?.message || 'Operation failed.', 'error'); 
         }
     };
 
@@ -51,10 +51,10 @@ const AdminDashboard = () => {
         if(window.confirm('Are you sure you want to delete this book?')) {
             try {
                 await api.delete(`/books/${id}`);
-                showNotification('Book deleted successfully!'); // 3. Replace alert
+                showNotification('Book deleted successfully!'); 
                 fetchBooks();
             } catch (error) {
-                showNotification(error.response?.data?.message || 'Failed to delete book.', 'error'); // 3. Replace alert
+                showNotification(error.response?.data?.message || 'Failed to delete book.', 'error'); 
             }
         }
     };
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
             setBorrowers(res.data);
             setSelectedBook(book);
         } catch (error) {
-            showNotification('Could not fetch borrower details.', 'error'); // 3. Replace alert
+            showNotification('Could not fetch borrower details.', 'error'); 
         }
     };
 

@@ -5,7 +5,7 @@ const Notification = ({ message, type, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, 3000); // Auto-close after 3 seconds
+    }, 5000); // Auto-close after 5 seconds
 
     return () => clearTimeout(timer);
   }, [onClose]);

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { useNotification } from '../context/NotificationContext'; // 1. Import hook
+import { useNotification } from '../context/NotificationContext'; 
 import './Home.css';
 
 const Home = () => {
     const [books, setBooks] = useState([]);
     const [borrowedBooks, setBorrowedBooks] = useState(new Set());
     const { user } = useAuth();
-    const { showNotification } = useNotification(); // 2. Use hook
+    const { showNotification } = useNotification(); 
 
     const fetchBooks = async () => {
         try {

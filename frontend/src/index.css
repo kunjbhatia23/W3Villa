@@ -16,7 +16,6 @@ body {
   padding: 0 20px;
 }
 
-/* Add some basic responsive design */
 @media (max-width: 768px) {
   .container {
     padding: 0 10px;
