@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
+import { useNotification } from '../context/NotificationContext'; // 1. Import hook
 
 const MyBooks = () => {
     const [borrowedBooks, setBorrowedBooks] = useState([]);
+    const { showNotification } = useNotification(); // 2. Use hook
 
     const fetchMyBooks = async () => {
         try {
@@ -20,15 +22,15 @@ const MyBooks = () => {
     const handleReturn = async (bookId) => {
         try {
             await api.post(`/books/${bookId}/return`);
-            alert('Book returned successfully!');
-            // Refresh the list after returning
+            // 3. Replace alert
+            showNotification('Book returned successfully!');
             fetchMyBooks();
         } catch (error) {
-            alert(error.response?.data?.message || 'Failed to return book.');
+            // 3. Replace alert
+            showNotification(error.response?.data?.message || 'Failed to return book.', 'error');
         }
     };
     
-    // Simple date formatting
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);

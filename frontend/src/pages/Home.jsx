@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext'; // 1. Import hook
 import './Home.css';
 
 const Home = () => {
     const [books, setBooks] = useState([]);
     const [borrowedBooks, setBorrowedBooks] = useState(new Set());
     const { user } = useAuth();
+    const { showNotification } = useNotification(); // 2. Use hook
 
     const fetchBooks = async () => {
         try {
@@ -37,17 +39,19 @@ const Home = () => {
 
     const handleBorrow = async (bookId) => {
         if (!user) {
-            alert('Please log in to borrow a book.');
+            // 3. Replace alert
+            showNotification('Please log in to borrow a book.', 'error');
             return;
         }
         try {
             await api.post(`/books/${bookId}/borrow`);
-            alert('Book borrowed successfully!');
-            // Refresh data
+            // 3. Replace alert
+            showNotification('Book borrowed successfully!');
             fetchBooks();
             fetchBorrowedBooks();
         } catch (error) {
-            alert(error.response?.data?.message || 'Failed to borrow book.');
+            // 3. Replace alert
+            showNotification(error.response?.data?.message || 'Failed to borrow book.', 'error');
         }
     };
 

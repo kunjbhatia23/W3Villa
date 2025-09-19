@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
+import { useNotification } from '../context/NotificationContext'; // 1. Import hook
 import './Admin.css';
 
 const AdminDashboard = () => {
@@ -8,6 +9,7 @@ const AdminDashboard = () => {
     const [isEditing, setIsEditing] = useState(null);
     const [selectedBook, setSelectedBook] = useState(null);
     const [borrowers, setBorrowers] = useState([]);
+    const { showNotification } = useNotification(); // 2. Use hook
 
     const fetchBooks = async () => {
         const res = await api.get('/books');
@@ -27,16 +29,16 @@ const AdminDashboard = () => {
         try {
             if (isEditing) {
                 await api.put(`/books/${isEditing}`, form);
-                alert('Book updated!');
+                showNotification('Book updated successfully!'); // 3. Replace alert
             } else {
                 await api.post('/books', form);
-                alert('Book added!');
+                showNotification('Book added successfully!'); // 3. Replace alert
             }
             setForm({ title: '', author: '', genre: '', totalCopies: '' });
             setIsEditing(null);
             fetchBooks();
         } catch (error) {
-            alert(error.response?.data?.message || 'Operation failed.');
+            showNotification(error.response?.data?.message || 'Operation failed.', 'error'); // 3. Replace alert
         }
     };
 
@@ -49,10 +51,10 @@ const AdminDashboard = () => {
         if(window.confirm('Are you sure you want to delete this book?')) {
             try {
                 await api.delete(`/books/${id}`);
-                alert('Book deleted!');
+                showNotification('Book deleted successfully!'); // 3. Replace alert
                 fetchBooks();
             } catch (error) {
-                alert(error.response?.data?.message || 'Failed to delete book.');
+                showNotification(error.response?.data?.message || 'Failed to delete book.', 'error'); // 3. Replace alert
             }
         }
     };
@@ -68,7 +70,7 @@ const AdminDashboard = () => {
             setBorrowers(res.data);
             setSelectedBook(book);
         } catch (error) {
-            alert('Could not fetch borrower details.');
+            showNotification('Could not fetch borrower details.', 'error'); // 3. Replace alert
         }
     };
 
