@@ -1,4 +1,4 @@
-# Book Library Management System
+# Library Management System
 
 A full-stack web application that allows users to manage a book collection. This system provides role-based access for Admins and Students (Users), simulating a basic library management system where book lending and availability are tracked.
 

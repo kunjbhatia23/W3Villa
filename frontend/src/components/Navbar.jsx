@@ -20,7 +20,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <NavLink to="/" className="navbar-logo" onClick={closeMenu}>
-          Book Library Management System 📚
+          Library Management System 📚
         </NavLink>
         <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
           <i className={menuOpen ? 'fas fa-times' : 'fas fa-bars'} />
